@@ -18,6 +18,7 @@ public:
     int getHealth();
     int getDamage();
     void getAttacked(int amount);
+    void setHealth(int newHealth);
 };
 
 #endif

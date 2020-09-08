@@ -18,9 +18,14 @@ int Unit::getHealth(){
 int Unit::getDamage(){
     return Damage;
 }
-
+void Unit::setHealth(int newHealth){
+    Health = newHealth;
+}
 void Unit::getAttacked(int amount){
     Health = Health - amount;
+    if(Health < 0){
+        Health = 0;
+    }
 }
 Unit::~Unit()
 {
