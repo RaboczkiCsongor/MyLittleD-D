@@ -4,29 +4,45 @@
 #include <sstream>
 #include <string>
 
-struct Mob
-{
-    std::string name;
-    int health;
-    int damage;
-};
+#include "Unit.h"
 
+void printUnits(Unit* UnitA, Unit* UnitB){
+    std::cout << UnitA->Unit::getName() << " Hp:" << UnitA->Unit::getHealth() << " Damage: " << UnitA->Unit::getDamage() << std::endl;
+    std::cout << UnitB->Unit::getName() << " Hp:" << UnitB->Unit::getHealth() << " Damage: " << UnitB->Unit::getDamage() << std::endl;
+}
+
+void fight(Unit* UnitA, Unit* UnitB){
+    printUnits(UnitA,UnitB);
+    while(UnitA->Unit::getHealth() > 0 && UnitB->Unit::getHealth() > 0){
+        std::cout << UnitA->getName() << " -> " << UnitB->getName() << std::endl; 
+        UnitB->getAttacked(UnitA->getDamage());
+        printUnits(UnitA,UnitB);
+        if(UnitB->getHealth()<=0){
+            break;
+        }
+        std::cout << UnitB->getName() << " -> " << UnitA->getName() << std::endl;
+        UnitA->getAttacked(UnitB->getDamage());
+        printUnits(UnitA,UnitB);
+        if(UnitA->getHealth()<=0){
+            break;
+        }
+    }
+    if(UnitA->getHealth()<=0){
+        std::cout << UnitA->getName() << " died. " << UnitB->getName() << " wins. " << std::endl;
+    }
+    if(UnitB->getHealth()<=0){
+        std::cout << UnitB->getName() << " died. " << UnitA->getName() << " wins. " << std::endl;
+    }
+}
 
 int main(int argc, char** argv){
-    Mob *Player1 = new Mob;
-    Mob *Player2 = new Mob;
-    Player1->name = argv[1];
-    Player2->name = argv[4];
-    std::stringstream healthValue(argv[2]);
-    std::stringstream damageValue(argv[3]);
-    healthValue >> Player1->health;
-    damageValue >> Player1->damage;
-    std::stringstream healthValue1(argv[5]);
-    std::stringstream damageValue1(argv[6]);
-    healthValue1 >> Player2->health;
-    damageValue1>> Player2->damage;
-    std::cout << Player1->name << " Hp:" << Player1->health << " Damage: " << Player1->damage << std::endl;
-    std::cout << Player2->name << " Hp:" << Player2->health << " Damage: " << Player2->damage << std::endl;
+    Unit* UnitOne = new Unit(argv[1],argv[2],argv[3]);
+    Unit* UnitTwo = new Unit(argv[4],argv[5],argv[6]);
 
+    fight(UnitOne,UnitTwo);
+    
+
+    delete UnitOne;
+    delete UnitTwo;
     return 0;
 } 
